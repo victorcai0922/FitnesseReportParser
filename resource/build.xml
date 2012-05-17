@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="my_fitnesse" basedir="." default="all">
+	<target name="my_fitnesse_tests">
+		<java jar="fitnesse.jar" failonerror="true" fork="true">
+			<arg value="-c" />
+			<arg value="HelloWorld?test&amp;format=text" />
+			<arg value="-p"/>
+		    <arg value="8080"/>
+		</java>
+	</target>
+	<target name="all" depends="my_fitnesse_tests">
+	</target>
+</project>
+
+
+
+
+

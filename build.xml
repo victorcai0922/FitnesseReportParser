@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="my_fitnesse" basedir="." default="all">
+	<target name="all" depends="init,run,mailsend">
+	</target>
+	<description>
+	        Start Fitnesse Testing!
+	</description>
+	<property name="prosrc.dir" value="F:\\hudson\\jobs\\CMFInterfaceTest\\workspace\\src" />
+	<property name="prolib.dir" value="F:\\hudson\\jobs\\CMFInterfaceTest\\workspace\\lib" />
+	<property name="proclasses.dir" value="F:\\hudson\\jobs\\CMFInterfaceTest\\workspace\\bin" />
+	<property name="proresource.dir" value="F:\\hudson\\jobs\\CMFInterfaceTest\\workspace\\resource" />
+	<!--存放Main函数的类 -->
+	<property name="main-class" value="com.Proxy" />
+	<property name="mailserver" value="mail.shengpayops.com" />
+	<property name="suser" value="interfacetest" />
+	<property name="spwd" value="interfacetest" />
+	<!--这里应该输入明文的用户名和密码，示例中不输入-->
+	<property name="rmaillist" value="caiqiuliang@snda.com" />
+	<property name="senderaddress" value="interfacetest@shengpayops.com" />
+	<property name="testreportdir" value="D:/recentlyReport" />
+	<property name="reportname" value="*.txt" />
+	<property name="greportname" value="*.jpg" />
+	<!--说明classpath,包括进来工程要用到的jar包 -->
+	<path id="pro.classpath">
+		<fileset file="$(prolib.dir)" includes="**/*.jar" />
+	</path>
+
+	<target name="clean" description="resets this demo project to a clean state">
+		<delete dir="${proclasses.dir}" />
+	</target>
+
+	<!--初始化，清理文件夹中的文件，以便重新编译 -->
+	<target name="init">
+		<!--<mkdir dir="${proclasses.dir}" />-->
+		<path id="proclasspath">
+			<pathelement location="${proclasses.dir}" />
+		</path>
+	</target>
+
+	<!--编译 -->
+	<target name="compile" depends="" description="compile the source files">
+		<javac fork="true" memoryInitialSize="256m" memoryMaximumSize="256m" debug="on" destdir="${proclasses.dir}" srcdir="${prosrc.dir}">
+			<classpath refid="pro.classpath" />
+		</javac>
+	</target>
+
+	<!--执行-->
+	<target name="run" depends="" description="execute the source files">
+		<java classname="com.Proxy" fork="true">
+			<classpath>
+				<path refid="pro.classpath" />
+				<path refid="proclasspath" />
+			</classpath>
+		</java>
+	</target>
+
+	<!--发邮件-->
+	<target name="mailsend" depends="">
+		<echo>发送测试报告邮件...</echo>
+		<mail mailhost="${mailserver}" mailport="25" subject="CMF接口测试执行结果" user="${suser}" password="${spwd}">
+			<from address="${senderaddress}" />
+			<to address="${rmaillist}" />
+			<to address="zhangbin.bin@snda.com" />
+			<to address="chenarong@snda.com" />
+			<to address="miaoxuepeng@snda.com" />
+			<message>
+				     本次构建以完成，附件中为本次测试报告，您也可以点击以下链接查看详细内容：
+			         http://10.241.70.44:8888/CmfInterfaceTest?pageHistory
+			</message>
+			<fileset dir="${testreportdir}">
+				<include name="**/${reportname}" />
+				<include name="**/${greportname}" />
+			</fileset>
+		</mail>
+	</target>
+
+
+
+</project>

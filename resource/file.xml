@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<books>
+   <book email="victor.cai@99bill.com">
+     <name>victor</name>
+     <price>60.0</price>
+  </book>
+</books>
